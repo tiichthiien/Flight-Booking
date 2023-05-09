@@ -37,12 +37,7 @@
 	        		<span class="icon-bar"></span>
 	      </button>
 			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="#"><strong>Home</strong></a></li>
-					<li><a href="GDC-About.php"><strong>About</strong></a></li>
-					<li><a href="GDC-Contacts.php"><strong>Contacts</strong></a></li>
-				</ul>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" data-toggle="modal" data-target="#signup"><strong>Sign up </strong><i class="fas fa-user-plus"></i></a></li>
 					<li><a href="#" data-toggle="modal" data-target="#login"><strong>Login </strong><i class="fas fa-user"></i></a></li>
