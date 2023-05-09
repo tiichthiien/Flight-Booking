@@ -1,3 +1,15 @@
+<?php 
+  error_reporting(0);
+  $dbhost="127.0.0.1";
+  $dbuser="root";
+  $dbpass="";
+  $db="Flight_Reservation";
+  $conn=mysqli_connect($dbhost,$dbuser,$dbpass,$db);
+  if(!$conn)
+  {
+    echo "Connection was failed".mysqli_connect_error();
+  }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,19 +81,31 @@
         <h3 class="lab">Flights</h3>
         <form action="GDC-HomeConn.php" method="POST"> 
           <select name="origin" class="drop" id="ori">
-        	 <option value="Origin">Origin</option>
-        	 <option value="Mumbai">MUMBAI</option>
-        	 <option value="Delhi">DELHI</option>
-        	 <option value="Banglore">BANGLORE</option>
-        	 <option value="Kolkata">KOLKATA</option>
+          <?php
+								$sql = 'SELECT * FROM flight ';
+								$stmt = mysqli_stmt_init($conn);
+								mysqli_stmt_prepare($stmt,$sql);         
+								mysqli_stmt_execute($stmt);          
+								$result = mysqli_stmt_get_result($stmt);    
+								while ($row = mysqli_fetch_assoc($result)) {
+								echo '<option value="'. $row['Origin']  .'">'. 
+									$row['Origin'] .'</option>';
+								}
+								?>
           </select>
           <i class="fas fa-exchange-alt"></i>
           <select name="destination" class="drop" id="dest">
-          	<option value="Destination">Destination</option>
-          	<option value="Mumbai">MUMBAI</option>
-          	<option value="Delhi">DELHI</option>
-          	<option value="Banglore">BANGLORE</option>
-          	<option value="Kolkata">KOLKATA</option>
+            <?php
+								$sql = 'SELECT * FROM flight ';
+								$stmt = mysqli_stmt_init($conn);
+								mysqli_stmt_prepare($stmt,$sql);         
+								mysqli_stmt_execute($stmt);          
+								$result = mysqli_stmt_get_result($stmt);
+								while ($row = mysqli_fetch_assoc($result)) {
+								echo '<option value="'. $row['Destination']  .'">'. 
+									$row['Destination'] .'</option>';
+								}
+								?>
           </select>
           <input type="number" class="drop" name="passengers" step="1" min="1" max="10" placeholder="Number Of Passengers">
           <span class="lab">Departure:</span>
@@ -200,16 +224,6 @@
 </html>
 
 <?php
-        error_reporting(0);
-        $dbhost="127.0.0.1";
-        $dbuser="root";
-        $dbpass="";
-        $db="Flight_Reservation";
-        $conn=mysqli_connect($dbhost,$dbuser,$dbpass,$db);
-        if(!$conn)
-        {
-          echo "Connection was failed".mysqli_connect_error();
-        }
         $uname=$_POST['usernameSignUp'];
         $uname=mysqli_real_escape_string($conn,$uname);
         $em=$_POST['emailid'];
