@@ -131,10 +131,10 @@
 			</thead>
 			<tbody>
 				<?php
-					$dbhost="localhost";
-					$dbuser="devang";
-					$dbpass="qwerty";
-					$db="gdcairways";
+					$dbhost="127.0.0.1";
+					$dbuser="root";
+					$dbpass="";
+					$db="Flight_Reservation";
 					$conn=mysqli_connect($dbhost,$dbuser,$dbpass,$db);
 					if(!$conn)
 					{
