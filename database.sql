@@ -44,3 +44,21 @@ CREATE TABLE ticket(
     FOREIGN KEY(FlightID) REFERENCES flight(FlightNo),
     FOREIGN KEY(Terminal) REFERENCES Terminal(TerminalID)
 );
+
+INSERT INTO users (username, email, password)
+VALUES ('johnsmith', 'johnsmith@example.com', 'password123');
+
+INSERT INTO Airport (AirCode, Name, City, State)
+VALUES ('JFK', 'John F. Kennedy International Airport', 'New York City', 'New York');
+
+INSERT INTO flight (FlightNo, Type, Origin, Destination, DepartureTime, ArrivalTime)
+VALUES ('DL123', 'Domestic', 'JFK', 'LAX', '2023-06-15 12:00:00', '2023-06-15 15:00:00');
+
+INSERT INTO Passenger (PassengerID, Name, Gender, DOB, MobileNo, EnamilID)
+VALUES ('P123', 'Jane Doe', 'Female', '1990-01-01', '555-555-1234', 'janedoe@example.com');
+
+INSERT INTO Terminal (TerminalID, TerminalName, AirCode)
+VALUES ('T1', 'Terminal 1', 'JFK');
+
+INSERT INTO ticket (TickNo, PassengerID, FlightID, Type, Terminal)
+VALUES ('T123', 'P123', 'DL123', 'Economy', 'T1');
