@@ -74,8 +74,8 @@ if (!$conn) {
       <!--Tab Content Flight-->
       <div id="home" class="tab-pane fade in active">
         <h3 class="lab">Flights</h3>
-        <form action="GDC-HomeConn.php" method="POST">
-          <select name="origin" class="drop" id="ori">
+        <form action="GDC-HomeConn.php" method="POST" onsubmit="return validateForm()">
+          <select name="origin" class="drop" id="ori" onchange="updateDestinationDropdown()">
             <option disabled selected>Select an origin</option>
             <?php
             $sql = 'SELECT * FROM flight';
@@ -84,43 +84,32 @@ if (!$conn) {
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             while ($row = mysqli_fetch_assoc($result)) {
-              if ($row['Origin'] != 'Departure') {
-                echo '<option value="' . $row['Origin']  . '">' .
-                  $row['Origin'] . '</option>';
-              } else {
-                echo '<option value="' . $row['Origin']  . '" disabled>' .
-                  $row['Origin'] . '</option>';
-              }
+              echo '<option value="' . $row['Origin']  . '">' .
+                $row['Origin'] . '</option>';
             }
             ?>
           </select>
 
           <i class="fas fa-exchange-alt"></i>
           <select name="destination" class="drop" id="dest">
-          <option disabled selected>Select an destination</option>
+            <option disabled selected>Select an destination</option>
             <?php
-            $sql = 'SELECT * FROM flight ';
+            $sql = 'SELECT * FROM flight';
             $stmt = mysqli_stmt_init($conn);
             mysqli_stmt_prepare($stmt, $sql);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             while ($row = mysqli_fetch_assoc($result)) {
-              if ($row['Destination'] != 'Departure') {
-                echo '<option value="' . $row['Destination']  . '">' .
-                  $row['Destination'] . '</option>';
-              } else {
-                echo '<option value="' . $row['Destination']  . '" disabled>' .
-                  $row['Destination'] . '</option>';
-              }
+              echo '<option value="' . $row['Destination']  . '">' .
+                $row['Destination'] . '</option>';
             }
             ?>
           </select>
-          <input type="number" class="drop" name="passengers" step="1" min="1" max="10" placeholder="Number Of Passengers">
+          <input type="number" class="drop" name="passengers" step="1" min="1" max="10" placeholder="Number Of Passengers" required>
           <span class="lab">Departure:</span>
-          <input type="date" name="depart" class="drop" id="depart">
+          <input type="date" name="depart" class="drop" id="depart" required>
           <span class="lab">Return:</span>
-          <input type="date" name="return" class="drop" id="return">
-          <!-- <button type="button" name="submit" class="btn btn-default btn-lg">Search Flight</button> -->
+          <input type="date" name="return" class="drop" id="return" required>
           <input type="submit" name="submit" id="flightsButton">
         </form>
       </div>
@@ -234,6 +223,41 @@ if (!$conn) {
   </div>
   <!--Login Modal End-->
   <script type="text/javascript" src="GDC-HomeJSnew.js"></script>
+  <script>
+    function updateDestinationDropdown() {
+      var originDropdown = document.getElementById("ori");
+      var destinationDropdown = document.getElementById("dest");
+      var selectedOrigin = originDropdown.value;
+
+      // Remove the selected option from the destination dropdown
+      for (var i = 0; i < destinationDropdown.options.length; i++) {
+        if (destinationDropdown.options[i].value == selectedOrigin) {
+          destinationDropdown.remove(i);
+        }
+      }
+    }
+  </script>
+  <script>
+    function validateForm() {
+      // Use the "checkValidity()" method of the HTML form to check if all the required fields have been filled
+      if (!document.forms[0].checkValidity()) {
+        // If any required field is not filled, show an alert message to the user and return false to prevent the form from being submitted
+        alert("Please fill out all required fields.");
+        return false;
+      } else {
+        // If all required fields are filled, check if the dropdown menus have been selected
+        var originDropdown = document.getElementById("ori");
+        var destinationDropdown = document.getElementById("dest");
+        if (originDropdown.selectedIndex == 0 || destinationDropdown.selectedIndex == 0) {
+          alert("Please select an origin and a destination.");
+          return false;
+        } else {
+          // If all required fields are filled and dropdown menus have been selected, return true to allow the form to be submitted
+          return true;
+        }
+      }
+    }
+  </script>
 </body>
 
 </html>

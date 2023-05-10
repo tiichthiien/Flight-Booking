@@ -1,8 +1,3 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-?>
 <!DOCTYPE html>
 <html>
 
@@ -131,17 +126,19 @@ error_reporting(E_ALL);
 				}
 				if (isset($_POST['submit'])) {
 					if (isset($_POST['origin']) && isset($_POST['destination']) && isset($_POST['depart']) && isset($_POST['return']) && isset($_POST['passengers'])) {
-						$origin = mysqli_real_escape_string($conn, $_POST['origin']);
-						$destination = mysqli_real_escape_string($conn, $_POST['destination']);
+						$origin = $_POST['origin'];
+						$destination = $_POST['destination'];
 						$depart = $_POST['depart'];
 						$return = $_POST['return'];
 						$passengers = $_POST['passengers'];
 
-						$sql = "Select * from flight where Origin='" . $origin . "' and Destination='" . $destination . "'";
-						if (mysqli_query($conn, $sql)) {
-							$print = mysqli_query($conn, $sql);
+						$stmt = $conn->prepare("Select * from flight where Origin= ? and Destination= ?");
+						$stmt->bind_param("ss", $origin, $destination);
 
-							while ($row = mysqli_fetch_assoc($print)) {
+						if ($stmt->execute()) {
+							$result = $stmt->get_result();
+
+							while ($row = $result->fetch_assoc()) {
 								echo "<tr>";
 								echo "<td>" . $row['FlightNo'] . "</td>";
 								$var_value = $row['FlightNo'];
@@ -152,9 +149,9 @@ error_reporting(E_ALL);
 								echo "<td>" . $row['DepartureTime'] . "</td>";
 								echo "<td>" . $row['ArrivalTime'] . "</td>";
 								echo "<td><form method='GET' action='GDC-Book.php'>
-														  <input type='hidden' name='varname' value='$var_value'>
-														  <input type='submit' value='BOOK' style='color:black'>
-														  </form></td>";
+																  <input type='hidden' name='varname' value='$var_value'>
+																  <input type='submit' value='BOOK' style='color:black'>
+																  </form></td>";
 								/*echo "<td><a href='GDC-Book.php?varname=<?php echo $var_value ?>'>Book</a></td>";*/
 
 								echo "</tr>";
