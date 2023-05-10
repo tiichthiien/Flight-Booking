@@ -105,13 +105,19 @@
         <h3 class="lab2">Flight Status</h3>
         <form action="GDC-FlightStatus.php" method="POST">
           <input type="text" name="flightid" placeholder="Flight Number" class="drop2">
-          <select name="origin" class="drop2">.
-          	<option value="org">Origin</option>
-          	<option value="Mumbai">MUMBAI</option>
-          	<option value="Delhi">DELHI</option>
-          	<option value="Banglore">BANGLORE</option>
-          	<option value="Kolkata">KOLKATA</option>
-          </select>
+          <?php
+          $sql = 'SELECT * FROM flight';
+          $stmt = mysqli_stmt_init($conn);
+          mysqli_stmt_prepare($stmt, $sql);
+          mysqli_stmt_execute($stmt);
+          $result = mysqli_stmt_get_result($stmt);
+          echo '<select class="" name="dep_city" id="w3_country1">
+                <option value="0" selected disabled>Departure</option>';
+          while ($row = mysqli_fetch_assoc($result)) {
+              echo '<option value="' . $row['Origin'] . '">' . $row['Origin'] . '</option>';
+          }
+          echo '</select>';
+          ?>
           <span class="lab2">Date:</span>
           <input type="date" name="depart" class="drop21">
           <input type="submit" name="submit" id="fsButton">
